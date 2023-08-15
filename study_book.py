@@ -669,3 +669,37 @@
 # print(rec.name, x.name)
 # print(rec.__dict__, x.__dict__)
 
+# print(open(r'OOP\persondb.dir').read())
+# import shelve, sys, os
+# sys.path.append(os.path.join(os.path.dirname(__file__), 'OOP'))
+# #print(sys.path)
+# # #v2
+# # from pathlib import Path
+# # shelfSavePath = Path(sys.argv[0]).parent / Path('OOP\persondb')
+# # db = shelve.open(fr'{shelfSavePath}')
+# db = shelve.open('OOP\persondb')
+# print(list(db.keys()))
+# bob = db['Bob Ivanov']
+# print(bob)
+# print(bob.lastname())
+
+# class MixedNames:
+#     data = 'spam'
+#     def __init__(self, value):
+#         self.data = value
+#     def display(self):
+#         print(self.data, MixedNames.data)
+# x = MixedNames(1)
+# y = MixedNames(2)
+# print(x.display(), y.display())
+
+# class NextClass:
+#     def printer(self, text):
+#         self.message = text
+#         print(self.message)
+# x = NextClass()
+# x.printer('instance call')  # better
+# print(x.message)
+# NextClass.printer(x, 'class call')
+# print(x.message)
+
