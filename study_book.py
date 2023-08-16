@@ -703,28 +703,146 @@
 # NextClass.printer(x, 'class call')
 # print(x.message)
 
-class Super:
-    def method(self):
-        print('in Super.method')
-    def delegate(self):
-        self.action()
-class Inheritor(Super):
-    pass
-class Replacer(Super):
-    def method(self):
-        print('in Replacer.method')
-class Extender(Super):
-    def method(self):
-        print('starting Extender.method')
-        Super.method(self)
-        print('ending Extender.method')
-class Provider(Super):
-    def action(self):
-        print('in Provider.action')
-if __name__ == '__main__':
-    for klass in (Inheritor, Replacer, Extender):
-        print('\n' + klass.__name__ + '...')
-        klass().method()
-    print('\nProvider...')
-    x = Provider()
-    x.delegate()
+# class Super:
+#     def method(self):
+#         print('in Super.method')
+#     def delegate(self):
+#         self.action()
+# class Inheritor(Super):
+#     pass
+# class Replacer(Super):
+#     def method(self):
+#         print('in Replacer.method')
+# class Extender(Super):
+#     def method(self):
+#         print('starting Extender.method')
+#         Super.method(self)
+#         print('ending Extender.method')
+# class Provider(Super):
+#     def action(self):
+#         print('in Provider.action')
+# if __name__ == '__main__':
+#     for klass in (Inheritor, Replacer, Extender):
+#         print('\n' + klass.__name__ + '...')
+#         klass().method()
+#     print('\nProvider...')
+#     x = Provider()
+#     x.delegate()
+
+# #import manynames.py
+# X = 11
+# def f():
+#     print(X)
+# def g():
+#     X = 22
+#     print(X)
+# def g2():
+#     global X
+#     X = 22
+# def h1():
+#     X = 33
+#     def nested():
+#         print(X)
+#     nested()
+# def h2():
+#     X = 33
+#     def nested():
+#         nonlocal X
+#         X = 44
+#     nested()
+#     print(X)
+# class C:
+#     X = 33
+#     def m(self):
+#         X = 44
+#         self.X = 55
+# if __name__ == '__main__':
+#     print(X) # 11
+#     f() # 11
+#     g() # 22
+#     g2() # g2() changed global X to 22
+#     print(X) # 22
+#     h1() # 33
+#     h2() # 44
+#     #print(X) # 33
+#     obj = C()
+#     print(obj.X, C.X) # 33 33
+#     obj.m()
+#     print(obj.X) # 55
+#     print(C.X) # 33
+#     #print(C.m.X) # FAILS: only visible in method
+#     #print(g.X) # FAILS: only visible in function
+# import manynames
+# print(manynames.X) # 11
+# manynames.f() # 11
+# manynames.g() # 22
+# print(manynames.C.X) # 33
+# I = manynames.C()
+# print(I.X) # 33
+# I.m()
+# print(I.X) # 55
+
+# X = 1
+# def nester():
+#     X = 2 # replace global X=1
+#     print(X) # 2
+#     class C:
+#         X = 3
+#         print(X) # 3
+#         def method1(self):
+#             print(X) # 2 - use X from nested
+#             print(self.X) # 3 - use X from class
+#         def method2(self):
+#             X = 4
+#             print(X) # 4
+#             print(self.X)  # 3
+#             self.X = 5
+#             print(self.X) # 5
+#     I = C()
+#     I.method1()
+#     I.method2()
+# print(X) # 1
+# nester()
+# print('-'*40)
+
+# class Super:
+#     def hello(self):
+#         self.data1 = 'hi'
+# class Sub(Super):
+#     def hola(self):
+#         self.data2 = 'priv'
+# x = Sub()
+# print(x.__dict__)
+# print(x.__class__)
+# print(Sub.__bases__)
+# print(Super.__bases__)
+# x.hello()
+# print(x.__dict__)
+# x.hola()
+# print(x.__dict__)
+# print(list(Sub.__dict__.keys()))
+# print(list(Super.__dict__.keys()))
+# print(x.data1, x.__dict__['data1'])
+# x.data3 = 'toast'
+# print(x.__dict__)
+# print(dir(x))
+
+# class Emp: pass
+# class Person(Emp): pass
+# bob = Person()
+# import classtree
+# classtree.instancetree(bob)
+
+# import docstr
+# help(docstr)
+
+# class Tmp:
+#     x=1
+# print(Tmp.x)
+# this will be shared by all instances;
+# but data attributes are not callable method functions
+# redefine subclass __init__ : Superclass.__init__(self, ...)
+# redefine subclass method: Superclass.method(self, ...)
+# A class is a local scope and has access to enclosing local scopes,
+# but it does not serve as an enclosing local scope to further nested code.
+
