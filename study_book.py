@@ -846,3 +846,79 @@
 # A class is a local scope and has access to enclosing local scopes,
 # but it does not serve as an enclosing local scope to further nested code.
 
+# class Number:
+#     def __init__(self, start):
+#         self.data = start
+#     def __sub__(self, other):
+#         return Number(self.data - other)
+# x = Number(5)
+# y = x-3
+# print(y.data) # 2
+
+# class Indexer:
+#     data = [5, 6, 7, 8, 9]
+#     def __getitem__(self, index):
+#         return self.data[index]
+# x=Indexer()
+# print(x[2:4])
+
+# class StepperIndex:
+#     def __getitem__(self, i):
+#         return self.data[i]
+# x=StepperIndex()
+# x.data='spam'
+# for item in x: print(item)
+
+# class C:
+#     def __index__(self):
+#         return 255
+# x=C()
+# print(hex(x))
+
+# class Squares:
+#     def __init__(self, start, stop):
+#         self.value = start - 1
+#         self.stop = stop
+#     def __iter__(self):
+#         return self
+#     def __next__(self):
+#         if self.value == self.stop:
+#             raise StopIteration
+#         self.value += 1
+#         return self.value ** 2
+# for i in Squares(1,5): print(i, end=' ')
+# x=Squares(1,5)
+# print()
+# print(next(x)) # 1
+# print(next(x)) # 4
+# i=iter(x)
+# print(next(i)) # 9
+# print(next(i)) # 16
+# print(next(i)) # 25
+# print(tuple(x))     # exhausted
+# print()
+
+# def gsquares(start, stop):
+#     for i in range(start, stop + 1):
+#         yield i ** 2 # generator function (produce iterable objects and retain local variable state)
+# for i in gsquares(1, 5):
+# #for i in (x ** 2 for x in range(1, 6)):   # the same with generator expression
+#     print(i, end=' ')
+
+# class Squares2:
+#     def __init__(self, start, stop):
+#         self.start = start
+#         self.stop = stop
+#     def __iter__(self):
+#         for value in range(self.start, self.stop + 1):
+#             yield value ** 2
+# for i in Squares2(1, 5): print(i, end=' ')
+# print()
+# s=Squares2(1,5)
+# i=iter(s)
+# print(next(i)) # 1
+# print(next(i)) # 4
+# j=iter(s)
+# print(next(j)) # 1
+# print(next(i)) # 9
+
