@@ -948,3 +948,44 @@
 #             print(next(I), end=' @ ')
 #         except StopIteration:
 #             break
+
+# __getattr__ - intercept non-existence attribute
+# __getattribute__ - all attribute
+# getattr() - get object's' properties
+
+# class Foo:
+#     def __init__(self, x):
+#         self.x = x
+# f = Foo(10)
+# print(getattr(f, 'y', 1))
+
+# class Adder:
+#     def __init__(self, value=0):
+#         self.data = value
+#     def __add__(self, other):
+#         #self.data += other
+#         print(f'Summing {self} + {other}')
+#         return Adder(self.data+other)
+# x=Adder()
+# print(x, x.data+1)
+# class Addrepr(Adder):
+#     def __repr__(self):
+#         return f'Addrepr({self.data})'
+# y = Addrepr(2)
+# #y.__add__(1)
+# print(y+1)
+# class Addstr(Adder):
+#     def __str__(self):
+#         return f'[Value: {self.data}]'
+# z=Addstr(3)
+# z.__add__(1)
+# print(z, str(z), repr(z))
+
+# class Printer:
+#     def __init__(self, val):
+#         self.val = val
+#     def __repr__(self): # __repr__ used by print if no __str__
+#         return str(self.val) # __repr__ used if echoed or nested
+# objs = [Printer(2), Printer(3)]
+# for x in objs: print(x) # No __str__: runs __repr__
+# print(objs) # Runs __repr__, not ___str__
