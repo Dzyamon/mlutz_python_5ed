@@ -989,3 +989,89 @@
 # objs = [Printer(2), Printer(3)]
 # for x in objs: print(x) # No __str__: runs __repr__
 # print(objs) # Runs __repr__, not ___str__
+
+# class Commuter2:
+#     def __init__(self, val):
+#         self.val = val
+#     def __add__(self, other):
+#         print('add', self.val, other)
+#         return self.val + other
+#     def __radd__(self, other):
+#         return self.__add__(other)
+#         # return self + other   #v2
+#     # __radd__ = __add__    # instead of __radd__
+#
+# class Commuter5:
+#     def __init__(self, val):
+#         self.val = val
+#     def __add__(self, other):
+#         if isinstance(other, Commuter5):
+#             other = other.val
+#         return Commuter5(self.val + other)
+#     def __radd__(self, other):
+#         return Commuter5(other + self.val)
+#     def __str__(self):
+#         return '<Commuter5: %s>' % self.val
+
+# class Number:   # +=
+#     def __init__(self, val):
+#         self.val = val
+#     def __iadd__(self, other):
+#         self.val += other
+#         return self
+
+# class Callee:
+#     def __call__(self, *pargs, **kargs):
+#         print('Called:', pargs, kargs)
+# с=Callee()
+# с(1, 2, 3, x=4, y=5)
+# с(1, *(2,), c=3, **dict(d=4))
+# class Prod:
+#     def __init__(self, value):
+#         self.value = value
+#     def __call__(self, other):
+#         return self.value * other
+# x=Prod(2)
+# print(x(3))    # 6 -- object as function
+
+# class Callback:
+#     def __init__(self, color): # Function + state information
+#         self.color = color
+#     def __call__(self): # Support calls with no arguments
+#         print('turn', self.color)
+# cb1 = Callback('blue')
+# cb1()
+# # similar closure variant with 2 def
+# def callback(color):
+#     def oncall():
+#         print('turn', color)
+#     return oncall
+# cb3 = callback('yellow')
+# cb3()
+
+# class C:
+#     data = 'spam'
+#     def __gt__(self, other):
+#         return self.data > other
+#     def __lt__(self, other):
+#         return self.data < other
+# x = C()
+# print(x > 'ham')
+# print(x < 'ham')
+
+# class Truth:
+#     def __bool__(self): return True # 3.X tries __bool__ first
+#     def __len__(self): return 0 # 2.X tries __len__ first
+# x = Truth()
+# if x: print('yes!')
+
+# iteration --> __getitem__ and __iter__
+# first: __iter__ + __next__
+# if no __iter__ is found: __getitem__ = yield + __next__
+#
+# __str__ is called by print() and str(), user friendly
+# __repr__ - print+str+repr if no __str__ is defined, more details
+#
+# slicing --> __getitem__
+#
+# += __iadd__ first, __add__ second
