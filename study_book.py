@@ -990,6 +990,45 @@
 # for x in objs: print(x) # No __str__: runs __repr__
 # print(objs) # Runs __repr__, not ___str__
 
+# class Commuter5:
+#     def __init__(self, val):
+#         self.val = val
+#     def __add__(self, other):
+#         if isinstance(other, Commuter5):
+#             other = other.val
+#         return Commuter5(self.val + other)
+#     def __radd__(self, other):
+#         return Commuter5(other + self.val)
+#     def __iadd__(self, other):
+#         self.val += other
+#         return self
+#     def __str__(self):
+#         return f'Commuter5: {self.val}'
+# x = Commuter5(1)
+# y = Commuter5(9)
+# print(2+x+y+x+5)
+# x+=1
+# print(x)
+
+# class Callee:
+#     def __call__(self, *pargs, **kargs):
+#         print('Called:', pargs, kargs)
+# C = Callee()
+# C(1, 2, 3, x=4, y=5)
+# X = Callee()
+# X(1, *(2,), c=3, **dict(d=4))
+
+# class C:
+#     data = 'abc'
+#     def __gt__(self, other):
+#         return self.data > other
+#     def __lt__(self, other):
+#         return self.data < other
+# X = C()
+# print(X > 'ab') # True
+# print(X > 'abcd') # False
+
+
 # class Commuter2:
 #     def __init__(self, val):
 #         self.val = val
@@ -1189,3 +1228,59 @@
 # y = Spam.doit   # unbound method
 # y(object1, 'howdy')
 # print(Spam.selfless(3, 4))
+
+# def factory(aClass, *pargs, **kargs):
+#     return aClass(*pargs, **kargs)
+# class Spam:
+#     def doit(self, message):
+#         print(message)
+# class Person:
+#     def __init__(self, name, job=None):
+#         self.name = name
+#         self.job = job
+# object1 = factory(Spam)
+# object2 = factory(Person, "Arthur", "King")
+# object3 = factory(Person, name='Brian')
+# object1.doit(99)
+# print(object2.job)
+# print(object3.name)
+
+# class ListInstance:
+#     """
+#     Mix-in class that provides a formatted print() or str() of instances via
+#     inheritance of __str__ coded here; displays instance attrs only; self is
+#     instance of lowest class; __X names avoid clashing with client's attrs
+#     """
+#     def __attrnames(self):
+#         result = ''
+#         # for attr in sorted(self.__dict__):
+#         for attr in dir(self):
+#             if attr[:2] == '__' and attr[-2:] == '__':
+#                 result += f'\t{attr}\n'
+#             else:
+#                 result += f'\t{attr}={getattr(self, attr)}\n'
+#         return result
+#     def __str__(self):
+#         return (f'<Instance of {self.__class__.__name__},'
+#                 f' address {id(self)}:'
+#                 f' {self.__attrnames()}>')
+# class Spam(ListInstance):
+#     def __init__(self):
+#         self.data1 = 'food'
+# x = Spam()
+# print(x)
+# # print(repr(x))
+# class Super:
+#     def __init__(self):
+#         self.data1 = 'spam'
+#     def ham(self):
+#         pass
+# class Sub(Super, ListInstance):
+#     def __init__(self):
+#         Super.__init__(self)
+#         self.data2 = 'eggs'
+#         self.data3 = 42
+#     def spam(self):
+#         pass
+# y = Sub()
+# print(y)
