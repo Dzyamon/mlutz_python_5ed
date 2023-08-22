@@ -1075,3 +1075,117 @@
 # slicing --> __getitem__
 #
 # += __iadd__ first, __add__ second
+
+#---------Designing with Classes---------
+
+# class Employee:
+#     def __init__(self, name, salary=0):
+#         self.name = name
+#         self.salary = salary
+#     def giveRaise(self, percent):
+#         self.salary = self.salary + (self.salary * percent)
+#     def work(self):
+#         print(self.name, "does stuff")
+#     def __repr__(self):
+#         return "<Employee: name=%s, salary=%s>" % (self.name, self.salary)
+# class Chef(Employee):
+#     def __init__(self, name):
+#         Employee.__init__(self, name, 50000)
+#     def work(self):
+#         print(self.name, "makes food")
+# class Server(Employee):
+#     def __init__(self, name):
+#         Employee.__init__(self, name, 40000)
+#     def work(self):
+#         print(self.name, "interfaces with customer")
+# class PizzaRobot(Chef):
+#     def __init__(self, name):
+#         Chef.__init__(self, name)
+#     def work(self):
+#         print(self.name, "makes pizza")
+# class Customer:
+#     def __init__(self, name):
+#         self.name = name
+#     def order(self, server):
+#         print(self.name, "orders from", server)
+#     def pay(self, server):
+#         print(self.name, "pays for item to", server)
+# class Oven:
+#     def bake(self):
+#         print("oven bakes")
+# class PizzaShop:
+#     def __init__(self):
+#         self.server = Server('Pat') # Embed other objects
+#         self.chef = PizzaRobot('Bob') # A robot named bob
+#         self.oven = Oven()
+#     def order(self, name):
+#         customer = Customer(name) # Activate other objects
+#         customer.order(self.server)
+#         self.chef.work()
+#         self.oven.bake()
+#         customer.pay(self.server)
+# if __name__ == "__main__":
+#     scene = PizzaShop() # Make the composite
+#     scene.order('Homer') # Simulate Homer's order
+#     print('...')
+#     scene.order('Shaggy')
+# shop = PizzaShop()
+# print(shop.server, shop.chef)
+# import pickle
+# pickle.dump(shop, open('shopfile.pkl', 'wb'))
+# obj = pickle.load(open('shopfile.pkl', 'rb'))
+# print(obj.server, obj.chef)
+# obj.order('Lenin')
+
+# class Processor:
+#     def __init__(self, reader, writer):
+#         self.reader = reader
+#         self.writer = writer
+#     def process(self):
+#         while True:
+#             data = self.reader.readline()
+#             if not data: break
+#             data = self.converter(data)
+#             self.writer.write(data)
+#     def converter(self, data):
+#         assert False, 'converter must be defined'
+# class Uppercase(Processor):
+#     def converter(self, data):
+#         return data.upper()
+# class HTMLize:
+#     def write(self, line):
+#         print('<PRE>%s</PRE>' % line.rstrip())
+# if __name__ == '__main__':
+#     import sys
+#     obj = Uppercase(open('tst.txt'), sys.stdout)
+#     obj.process()
+#     print()
+#     Uppercase(open('tst.txt'), HTMLize()).process()
+
+# class Wrapper:
+#     def __init__(self, object):
+#         self.wrapped = object # Save object
+#     def __getattr__(self, attrname):
+#         print('Trace: ' + attrname) # Trace fetch
+#         return getattr(self.wrapped, attrname)
+# x = Wrapper([1, 2, 3])
+# x.append(4)
+# print(x.wrapped)
+# x = Wrapper({'a': 1, 'b': 2})
+# print(x.keys())
+
+# class Tool:
+#     def __method(self): ... # Becomes _Tool__method
+
+# class Spam:
+#     def doit(self, message):
+#         print(message)
+#     def selfless(arg1, arg2):  # A simple function in 3.X
+#         return arg1 + arg2
+# object1 = Spam()
+# object1.doit('hello')   # standard
+# x = object1.doit    # bound method
+# x('hello')
+# y = Spam.doit   # unbound method
+# y(object1, 'howdy')
+# print(Spam.selfless(3, 4))
