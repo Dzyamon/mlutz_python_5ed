@@ -1223,7 +1223,7 @@
 #         return arg1 + arg2
 # object1 = Spam()
 # object1.doit('hello')   # standard
-# x = object1.doit    # bound method
+# x = object1.doit    # bound method - combine an instance and a method function;
 # x('hello')
 # y = Spam.doit   # unbound method
 # y(object1, 'howdy')
@@ -1284,3 +1284,89 @@
 #         pass
 # y = Sub()
 # print(y)
+
+# #delegation example
+# class A:
+#   def spam(self, x):
+#     print(‘A.spam’, x)
+#   def foo(self):
+#     print(‘A.foo’)
+# class B:    # class B(A): - inheritance
+#   def __init__(self):
+#     self._a = A()
+#   def spam(self, x):
+#     print(‘B.spam’, x)
+#     self._a.spam(x)
+#   def bar(self):
+#     print('B.bar')
+#   def __getattr__(self, name):  # use __getattr__
+#     return getattr(self._a, name)
+
+# class Set(list):
+#     def __init__(self, value=[]): # Constructor
+#         list.__init__([]) # Customizes list
+#         self.concat(value)
+#     def intersect(self, other):  # other is any sequence
+#         res = []  # self is the subject
+#         for x in self:
+#             if x in other:  # Pick common items
+#                 res.append(x)
+#         return Set(res)  # Return a new Set
+#     def union(self, other):  # other is any sequence
+#         res = Set(self)  # Copy me and my list
+#         res.concat(other)
+#         return res
+#     def concat(self, value):  # value: list, Set, etc.
+#         for x in value:  # Removes duplicates
+#             if not x in self:
+#                 self.append(x)
+#     def __and__(self, other): return self.intersect(other)
+#     def __or__(self, other): return self.union(other)
+#     def __repr__(self): return 'Set:' + list.__repr__(self)
+# if __name__ == '__main__':
+#     x = Set([1,3,5,7])
+#     y = Set([2,1,4,5,6])
+#     print(x, y, len(x))
+#     print(x.intersect(y), y.union(x))
+#     print(x & y, x | y)
+#     x.reverse(); print(x)
+
+# class C(object): # New-style: 3.X and 2.X
+#     data = 'spam'
+#     def __getattr__(self, name): # Catch normal names
+#         print('getattr: ' + name)
+#         return getattr(self.data, name)
+#     def __getitem__(self, i): # Redefine built-ins
+#         print('getitem: ' + str(i))
+#         return self.data[i] # Run expr or getattr
+#     def __add__(self, other):
+#         print('add: ' + other)
+#         return getattr(self.data, '__add__')(other)
+# x=C()
+# print(x.upper())
+# print(x[1])
+# print(x+'maps')
+
+# #DFLR vs MRO - diamonds
+# class A: attr = 1
+# class B(A): pass
+# class C(A): attr = 2    # stop search for attribute
+# class D(B, C): pass
+# #class D(B, C): attr = B.attr   # Choose A.attr, above = 1
+# x = D()
+# print(x.attr)   # 2 (MRO)
+# print(D.__mro__)  # D-B-C-A-obj
+
+# #MRO - nondiamond [DFLR - depth first then left to right]
+# class A: pass
+# class B(A): pass # Nondiamonds: order same as classic
+# class C: pass # Depth first, then left to right
+# class D(B, C): pass
+# print(D.__mro__)   # D-B-A-C-obj
+
+# class X: pass
+# class Y: pass
+# class A(X): pass # Nondiamond: depth first then left to right
+# class B(Y): pass # Though implied "object" always forms a diamond
+# class D(A, B): pass
+# print(D.__mro__)   # D-A-X-B-Y-obj
