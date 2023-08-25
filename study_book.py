@@ -1370,3 +1370,132 @@
 # class B(Y): pass # Though implied "object" always forms a diamond
 # class D(A, B): pass
 # print(D.__mro__)   # D-A-X-B-Y-obj
+
+# class C():
+#     __slots__ = ['a', 'b', '__dict__']  # assign only to listed attributes
+#     def __init__(self, data):
+#         self.c = data
+# x=C(3)
+# x.a, x.b = 1, 2
+# # x.aaa=2 #error
+# print(x.a, x.b, x.c)
+# print(getattr(x, 'd', 4))   # ===setattr
+# print(dir(x))
+# print(x.__dict__)   #{'c': 4}
+# print(C.__mro__)
+# # slots not inherited by classes C(E):
+
+# class Properties():
+#     def getage(self):
+#         return 40
+#     def setage(self, value):
+#         print('set age: %s' % value)
+#         self._age = value
+#     age = property(getage, setage, None, None)
+# x = Properties()
+# print(x.age)    # run getage
+# x.age = 42  # run setage
+# print(x.age, x._age)
+# x.job='aaa' # normal assignment
+# print(x.job)
+
+# class Methods:
+#     def imet(self, x):  # Normal instance method: passed a self
+#         print([self, x])
+#     def stmet(x):   # Static: no instance passed
+#         print([x])
+#     def clmet(cls, x):  # Class: gets class, not instance
+#         print([cls, x])
+#     stmet = staticmethod(stmet)
+#     clmet = classmethod(clmet)
+# obj = Methods()
+# obj.imet(1)
+# Methods.imet(obj, 1)    # same
+# Methods.stmet(3)    # Static method
+# obj.stmet(3)
+# Methods.clmet(5)    # class method
+# obj.clmet(5)
+
+# class Spam:
+#     numInstances = 0
+#     def __init__(self):
+#         Spam.numInstances += 1
+#     # def printNumInstances():
+#     #     print("Number of instances created: %s" % Spam.numInstances)
+#     # printNumInstances = staticmethod(printNumInstances)   # staticmethod
+#     def printNumInstances(cls):
+#         print(f"Number of instances: {cls.numInstances}")
+#     printNumInstances = classmethod(printNumInstances)      # classmethod
+# a, b, c = Spam(), Spam(), Spam()
+# Spam.printNumInstances()    # 3
+# a.printNumInstances()
+# class Sub(Spam):
+#     # def printNumInstances(): # Override a static method
+#     #     print("Extra stuff...") # But call back to original
+#     #     Spam.printNumInstances()
+#     # printNumInstances = staticmethod(printNumInstances)
+#     def printNumInstances(cls): # Override a class method
+#         print("Extra stuff...") # But call back to original
+#         Spam.printNumInstances()
+#     printNumInstances = classmethod(printNumInstances)
+# d=Sub()
+# d.printNumInstances()   # subclass instance
+# Sub.printNumInstances() # subclass
+# Spam.printNumInstances()    # original
+
+# class Klass:
+#     count_instance = 0
+#     def __init__(self):
+#         Klass.count_instance += 1
+#     @staticmethod
+#     def print_count_instance():
+#         print(f"Number of instances: {Klass.count_instance}")
+# a, b, c = Klass(), Klass(), Klass()
+# Klass.print_count_instance()    # 3
+# a.print_count_instance()
+
+# class Methods:
+#     def in_met(self, x):  # Normal instance method: passed a self
+#         print([self, x])
+#     @staticmethod
+#     def st_met(x):   # Static: no instance passed
+#         print([x])
+#     @classmethod
+#     def cl_met(cls, x):  # Class: gets class, not instance
+#         print([cls, x])
+#     @property       # Property: computed on fetch
+#     def name(self):
+#         return 'Bob ' + self.__class__.__name__
+# obj = Methods()
+# obj.in_met(1)
+# Methods.in_met(obj, 1)    # same
+# Methods.st_met(3)    # Static method
+# obj.st_met(3)
+# Methods.cl_met(5)    # class method
+# obj.cl_met(5)
+# print(obj.name)
+
+# class Tracer:
+#     def __init__(self, func): # Remember original, init counter
+#         self.calls = 0
+#         self.func = func
+#     def __call__(self, *args): # On later calls: add logic, run original
+#         self.calls += 1
+#         print(f'call #{self.calls} to function {self.func.__name__}')
+#         return self.func(*args)
+# @Tracer     # Same as spam = tracer(spam)
+# def spam(a, b, c):      # Wrap spam in a decorator object
+#     return a + b + c
+# print(spam(1, 2, 3))    # Really calls the tracer wrapper object
+# print(spam('a', 'b', 'c'))
+
+class C:
+    def act(self):
+        print('spam')
+class D(C):
+    def act(self):
+        # C.act(self) # Name superclass explicitly, pass self
+        super().act()  # Reference superclass generically, omit self
+        print('eggs')
+x = D()
+x.act()
