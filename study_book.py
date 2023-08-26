@@ -1489,13 +1489,84 @@
 # print(spam(1, 2, 3))    # Really calls the tracer wrapper object
 # print(spam('a', 'b', 'c'))
 
-class C:
-    def act(self):
-        print('spam')
-class D(C):
-    def act(self):
-        # C.act(self) # Name superclass explicitly, pass self
-        super().act()  # Reference superclass generically, omit self
-        print('eggs')
-x = D()
-x.act()
+# class A:
+#     def act(self): print('A')
+# class B:
+#     def act(self): print('B')
+# class C(B,A):   # use only B-leftmost
+#     def act(self):
+#         super().act()
+#         A.act(self) # used explicitly
+#         B.act(self)
+#         #print('spam')
+# class D(C):
+#     def act(self):
+#         # C.act(self) # Name superclass explicitly, pass self
+#         super().act()  # Reference superclass generically, omit self
+#         print('eggs')
+# x = D()
+# x.act()
+# y = C()
+# y.act()
+
+# class X:
+#     def m(self): print('X.m')
+# class Y:
+#     def m(self): print('Y.m')
+# class C(X):
+#     def m(self): super().m()
+#     # def m(self): C.__bases__[0].m(self)
+# i=C()
+# i.m()
+# C.__bases__=(Y,)    # Change superclass at runtime!
+# i.m()
+
+# class A:
+#     def __init__(self):
+#         print('A.__init__')
+# class B(A):
+#     def __init__(self):
+#         print('B.__init__')
+#         super().__init__()
+# class C(A):
+#     def __init__(self):
+#         print('C.__init__')
+#         super().__init__()
+# class D(B, C): pass
+# x = D() # use MRO
+# print(D.__mro__)
+
+# class B:
+#     def __init__(self):
+#         print('B.__init__')
+#         #super().__init__()
+# class C:
+#     def __init__(self):
+#         print('C.__init__')
+#         super().__init__()
+# class D(B, C):
+#     def __init__(self):
+#         print('D.__init__')
+#         super().__init__()
+# X = D()     # ! without super in B prints only: D.__init__  B.__init__
+# print(D.__mro__)
+
+# class Employee:
+#     def __init__(self, name, salary):
+#         self.name = name
+#         self.salary = salary
+# class Chef2(Employee):
+#     def __init__(self, name):
+#         super().__init__(name, 50000)
+# class Server2(Employee):
+#     def __init__(self, name):
+#         super().__init__(name, 40000)
+# class TwoJobs(Chef2, Server2):
+#     def __init__(self, name):
+#         #Employee.__init__(self, name, 70000)
+#         super().__init__(name, 70000)   #error
+# bob = Chef2('Bob')
+# sue = Server2('Sue')
+# tom = TwoJobs('Tom')
+# print(bob.salary, sue.salary, tom.salary)
+
