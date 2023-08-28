@@ -1570,3 +1570,78 @@
 # tom = TwoJobs('Tom')
 # print(bob.salary, sue.salary, tom.salary)
 
+# def generate():
+#     return Spam()
+# class Spam:
+#     count = 1
+#     def method(self):
+#         print(Spam.count)
+# generate().method()
+# print(generate().count)
+# print(Spam.count)
+
+# def generate(label):
+#     class Spam:
+#         count = 1
+#         def method(self):
+#             print("%s=%s" % (label, Spam.count))
+#     return Spam
+# aclass = generate('Gotchas')
+# print(aclass)
+# I = aclass()
+# print(I)
+# I.method()
+
+# New-style classes search the diamond pattern of multiple inheritance trees
+# breadth-first (across), instead of depth-first (up).
+# Normal (instance) methods - self argument
+# Static methods - NO self
+
+#--------EXERCESISES-----------
+class Adder:
+    def add(self, x, y):
+        return print('Not Implemented')
+    def __init__(self, start=[]):
+        self.data=start
+    def __add__(self, other):
+        return self.add(self.data, other)
+class ListAdder(Adder):
+    def add(self, x, y):
+        return x+y
+class DictAdder(Adder):
+    def add(self, x, y):
+        d={}
+        for k in x.keys(): d[k] = x[k]
+        for k in y.keys(): d[k] = y[k]
+        return d
+x=Adder()
+x.add(1,2)
+y=ListAdder()
+print(y.add([1], [2]))
+z=DictAdder()
+print(z.add({'a': 1, 'b': 2, 'c': 3}, {'d': 4, 'e': 5, 'a': 6}))
+x=Adder([10])
+x+[2]
+y=ListAdder([10])
+print(y+[2])
+#v2
+class Adder:
+    def __init__(self, start=[]):
+        self.data=start
+    def __add__(self, other):
+        return self.add(other)
+    def add(self, y):
+        return print('Not Implemented')
+class ListAdder(Adder):
+    def add(self, y):
+        return self.data + y
+class DictAdder(Adder):
+    def add(self, y):
+        d = self.data.copy()
+        d.update(y)
+        return d
+y=ListAdder([1, 2, 3])
+print(y + [1, 2])
+z=DictAdder({'name':'Bob'}) + {'a': 1, 'b': 2, 'c': 3}
+print(z)
+
