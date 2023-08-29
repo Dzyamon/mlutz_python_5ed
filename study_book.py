@@ -1598,50 +1598,165 @@
 # Static methods - NO self
 
 #--------EXERCESISES-----------
-class Adder:
-    def add(self, x, y):
-        return print('Not Implemented')
-    def __init__(self, start=[]):
-        self.data=start
-    def __add__(self, other):
-        return self.add(self.data, other)
-class ListAdder(Adder):
-    def add(self, x, y):
-        return x+y
-class DictAdder(Adder):
-    def add(self, x, y):
-        d={}
-        for k in x.keys(): d[k] = x[k]
-        for k in y.keys(): d[k] = y[k]
-        return d
-x=Adder()
-x.add(1,2)
-y=ListAdder()
-print(y.add([1], [2]))
-z=DictAdder()
-print(z.add({'a': 1, 'b': 2, 'c': 3}, {'d': 4, 'e': 5, 'a': 6}))
-x=Adder([10])
-x+[2]
-y=ListAdder([10])
-print(y+[2])
-#v2
-class Adder:
-    def __init__(self, start=[]):
-        self.data=start
-    def __add__(self, other):
-        return self.add(other)
-    def add(self, y):
-        return print('Not Implemented')
-class ListAdder(Adder):
-    def add(self, y):
-        return self.data + y
-class DictAdder(Adder):
-    def add(self, y):
-        d = self.data.copy()
-        d.update(y)
-        return d
-y=ListAdder([1, 2, 3])
-print(y + [1, 2])
-z=DictAdder({'name':'Bob'}) + {'a': 1, 'b': 2, 'c': 3}
-print(z)
+# class Adder:
+#     def add(self, x, y):
+#         print('Not Implemented')
+#     def __init__(self, start=[]):
+#         self.data=start
+#     def __add__(self, other):
+#         return self.add(self.data, other)
+# class ListAdder(Adder):
+#     def add(self, x, y):
+#         return x+y
+# class DictAdder(Adder):
+#     def add(self, x, y):
+#         d={}
+#         for k in x.keys(): d[k] = x[k]
+#         for k in y.keys(): d[k] = y[k]
+#         return d
+# x=Adder()
+# x.add(1,2)
+# y=ListAdder()
+# print(y.add([1], [2]))
+# z=DictAdder()
+# print(z.add({'a': 1, 'b': 2, 'c': 3}, {'d': 4, 'e': 5, 'a': 6}))
+# x=Adder([10])
+# x+[2]
+# y=ListAdder([10])
+# print(y+[2])
+# #v2
+# class Adder:
+#     def __init__(self, start=[]):
+#         self.data=start
+#     def __add__(self, other):
+#         return self.add(other)
+#     def add(self, y):
+#         print('Not Implemented')
+# class ListAdder(Adder):
+#     def __add__(self, y):
+#         return self.data + y
+# class DictAdder(Adder):
+#     def __add__(self, y):
+#         d = self.data.copy()
+#         d.update(y)
+#         return d
+# y=ListAdder([1, 2, 3])
+# print(y + [1, 2])
+# z=DictAdder({'name':'Bob'}) + {'a': 1, 'b': 2, 'c': 3}
+# print(z)
 
+# class MyList:
+#     def __init__(self, start):
+#         #self.wrapped = start[:]
+#         self.wrapped = list(start)
+#     def __add__(self, other):
+#         return MyList(self.wrapped + other)
+#     def __mul__(self, time):
+#         return MyList(self.wrapped * time)
+#     def __getitem__(self, offset): # index and slice in 3.X
+#         return self.wrapped[offset]
+#     def __len__(self):
+#         return len(self.wrapped)
+#     def __getattr__(self, name):  # needed for sort()
+#         return getattr(self.wrapped, name)
+#     def __repr__(self):
+#         return repr(self.wrapped)
+#     def append(self, node):
+#         self.wrapped.append(node)
+# if __name__ == '__main__':
+#     x = MyList('spam')
+#     print(x)
+#     print(x + ['eggs'])
+#     print(x * 3)
+#     print(x[2])
+#     print(x[1:])
+#     print(len(x))
+#     x.append('a')
+#     x.sort()
+#     print(' '.join(c for c in x))
+
+# class MyListSub(MyList):
+#     calls = 0
+#     def __init__(self, start):
+#         self.adds = 0 # Varies in each instance
+#         MyList.__init__(self, start)
+#     def __add__(self, other):
+#         print('add: ' + str(other))
+#         MyListSub.calls += 1     # Class counter
+#         self.adds += 1      # Instance counts
+#         return MyList.__add__(self, other)  # perform inherited MyList method
+#     def stats(self):
+#         return self.calls, self.adds
+# if __name__ == '__main__':
+#     x = MyListSub('spam')
+#     y = MyListSub('foo')
+#     print(x)
+#     print(x + ['eggs'])
+#     print(x.stats(), y.stats())
+#     print(x + ['toast'])
+#     print(x.stats(), y.stats())
+#     print(y + ['bar'])
+#     print(x.stats(), y.stats())
+
+# class Attrs:
+#     def __getattr__(self, name):
+#         print('get %s' % name)
+#     def __setattr__(self, name, value):
+#         print('set %s %s' % (name, value))
+# x = Attrs()
+# x.append_attr
+# x.new_attribute='spam'
+
+class MSet:
+    def __init__(self, value=[]):    # Constructor
+        self.data = []
+        self.concat(value)
+    def intersect(self, *others):
+        res = []
+        for x in self:
+            for other in others:
+                if x not in other:
+                    break
+            else:
+                res.append(x)
+        return MSet(res)
+    def union(*args):
+        res = []
+        for seq in args:
+            for x in seq:
+                if not x in res:
+                    res.append(x)
+        return MSet(res)
+    def concat(self, value): # value: list, Set...
+        for x in value: # Removes duplicates
+            if not x in self.data:
+                self.data.append(x)
+    def __len__(self): return len(self.data) # len(self), if self
+    def __getitem__(self, key): return self.data[key] # self[i], self[i:j]
+    def __and__(self, other): return self.intersect(other) # self & other
+    def __or__(self, other): return self.union(other) # self | other
+    def __repr__(self): return 'Set: ' + repr(self.data) # print(self),...
+    def __iter__(self): return iter(self.data)
+x = MSet([1, 2, 3, 4])
+y = MSet([3, 4, 5])
+print(x & y)                # __and__, intersect, then __repr__
+print(x | y)                # __or__, union, then __repr__
+z = MSet("hello")            # __init__ removes duplicates
+print(z, len(z))
+print(z[0], z[-1], z[2:])   # __getitem__ is used
+for c in z: print(c, end=' ')  # __iter__ (else __getitem__)
+print()
+print(z & 'mel')
+print(z | 'mel')
+print('----------------------')
+a = MSet([1, 2, 3, 4])
+b = MSet([3, 4, 5])
+c = MSet([0, 1, 2])
+print(a & b)
+print(a | b)
+print(a.intersect(b,c))
+print(a.union(b,c))
+print(a.intersect([1,2,3], [2,3,4], [1,2,3]))
+print(a.union(range(10)))
+w = MSet('spam')
+print((w | 'super') & MSet('slots'))
