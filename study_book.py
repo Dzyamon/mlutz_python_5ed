@@ -1707,56 +1707,128 @@
 # x.append_attr
 # x.new_attribute='spam'
 
-class MSet:
-    def __init__(self, value=[]):    # Constructor
-        self.data = []
-        self.concat(value)
-    def intersect(self, *others):
-        res = []
-        for x in self:
-            for other in others:
-                if x not in other:
-                    break
-            else:
-                res.append(x)
-        return MSet(res)
-    def union(*args):
-        res = []
-        for seq in args:
-            for x in seq:
-                if not x in res:
-                    res.append(x)
-        return MSet(res)
-    def concat(self, value): # value: list, Set...
-        for x in value: # Removes duplicates
-            if not x in self.data:
-                self.data.append(x)
-    def __len__(self): return len(self.data) # len(self), if self
-    def __getitem__(self, key): return self.data[key] # self[i], self[i:j]
-    def __and__(self, other): return self.intersect(other) # self & other
-    def __or__(self, other): return self.union(other) # self | other
-    def __repr__(self): return 'Set: ' + repr(self.data) # print(self),...
-    def __iter__(self): return iter(self.data)
-x = MSet([1, 2, 3, 4])
-y = MSet([3, 4, 5])
-print(x & y)                # __and__, intersect, then __repr__
-print(x | y)                # __or__, union, then __repr__
-z = MSet("hello")            # __init__ removes duplicates
-print(z, len(z))
-print(z[0], z[-1], z[2:])   # __getitem__ is used
-for c in z: print(c, end=' ')  # __iter__ (else __getitem__)
-print()
-print(z & 'mel')
-print(z | 'mel')
-print('----------------------')
-a = MSet([1, 2, 3, 4])
-b = MSet([3, 4, 5])
-c = MSet([0, 1, 2])
-print(a & b)
-print(a | b)
-print(a.intersect(b,c))
-print(a.union(b,c))
-print(a.intersect([1,2,3], [2,3,4], [1,2,3]))
-print(a.union(range(10)))
-w = MSet('spam')
-print((w | 'super') & MSet('slots'))
+# class MSet:
+#     def __init__(self, value=[]):    # Constructor
+#         self.data = []
+#         self.concat(value)
+#     def intersect(self, *others):
+#         res = []
+#         for x in self:
+#             for other in others:
+#                 if x not in other:
+#                     break
+#             else:
+#                 res.append(x)
+#         return MSet(res)
+#     def union(*args):
+#         res = []
+#         for seq in args:
+#             for x in seq:
+#                 if not x in res:
+#                     res.append(x)
+#         return MSet(res)
+#     def concat(self, value): # value: list, Set...
+#         for x in value: # Removes duplicates
+#             if not x in self.data:
+#                 self.data.append(x)
+#     def __len__(self): return len(self.data) # len(self), if self
+#     def __getitem__(self, key): return self.data[key] # self[i], self[i:j]
+#     def __and__(self, other): return self.intersect(other) # self & other
+#     def __or__(self, other): return self.union(other) # self | other
+#     def __repr__(self): return 'Set: ' + repr(self.data) # print(self),...
+#     def __iter__(self): return iter(self.data)
+# x = MSet([1, 2, 3, 4])
+# y = MSet([3, 4, 5])
+# print(x & y)                # __and__, intersect, then __repr__
+# print(x | y)                # __or__, union, then __repr__
+# z = MSet("hello")            # __init__ removes duplicates
+# print(z, len(z))
+# print(z[0], z[-1], z[2:])   # __getitem__ is used
+# for c in z: print(c, end=' ')  # __iter__ (else __getitem__)
+# print()
+# print(z & 'mel')
+# print(z | 'mel')
+# print('----------------------')
+# a = MSet([1, 2, 3, 4])
+# b = MSet([3, 4, 5])
+# c = MSet([0, 1, 2])
+# print(a & b)
+# print(a | b)
+# print(a.intersect(b,c))
+# print(a.union(b,c))
+# print(a.intersect([1,2,3], [2,3,4], [1,2,3]))
+# print(a.union(range(10)))
+# w = MSet('spam')
+# print((w | 'super') & MSet('slots'))
+
+# class Up: pass
+# class Down: pass
+# class ListInstance(Up,Down):
+#     def __attrnames(self):
+#         result = ''
+#         for attr in sorted(self.__dict__):
+#             result += f'\t{attr}={self.__dict__[attr]}\n'
+#         return result
+#     def __str__(self):
+#         return '<Instance of %s(%s), address %s:\n%s>' % (
+#             self.__class__.__name__,
+#             self.__supers(),
+#             id(self),
+#             self.__attrnames()
+#         )
+#     def __supers(self):
+#         names = []
+#         for super in self.__class__.__bases__:
+#             names.append(super.__name__)
+#         return ', '.join(names)
+# x=ListInstance()
+# x.data1='spam'
+# x.data2='eggs'
+# x.data3=42
+# print(x)
+
+# class Lunch:
+#     def __init__(self):
+#         self.cust = Customer()
+#         self.empl = Employee()
+#     def order(self, foodName):
+#         self.cust.placeOrder(foodName, self.empl)
+#     def result(self):
+#         self.cust.printFood()
+# class Customer:
+#     def __init__(self):
+#         self.food = None
+#     def placeOrder(self, foodName, employee):
+#         self.food = employee.takeOrder(foodName)
+#     def printFood(self):
+#         print(self.food.name)
+# class Employee:
+#     def takeOrder(self, foodName):
+#         return Food(foodName)
+# class Food:
+#     def __init__(self, name):
+#         self.name = name
+# if __name__ == '__main__':
+#     x = Lunch()
+#     x.order('burritos')
+#     x.result()
+#     x.order('pizza')
+#     x.result()
+
+# class Animal:
+#     def reply(self): self.speak()
+#     def speak(self): print('spam')
+# class Mammal(Animal):
+#     def speak(self): print('huh?')
+# class Cat(Mammal):
+#     def speak(self): print('meow')
+# class Dog(Mammal):
+#     def speak(self): print('bark')
+# class Primate(Mammal):
+#     def speak(self): print('Hello world!')
+# class Hacker(Primate): pass
+# spot = Cat()
+# spot.reply()
+# data = Hacker()
+# data.reply()
+
