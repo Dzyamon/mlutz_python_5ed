@@ -1860,3 +1860,33 @@
 # x.action()
 
 #-----EXCEPTIONS------
+
+# def fetcher(obj, index):
+#     return obj[index]
+# x = 'spam'
+
+# def catcher():
+#     try:
+#         print(fetcher(x,4))
+#     except IndexError:
+#         print('got exception')
+#     print('continue')
+# catcher()
+
+# def after():
+#     try:
+#         fetcher(x, 4)
+#     finally:
+#         print('after fetch')
+#     print('after try?')
+# after()
+
+# class AlreadyGotOne(Exception): pass
+# def grail():
+#     raise AlreadyGotOne()
+# try:
+#     grail()
+# except AlreadyGotOne:
+#     print('got exception')
+
+
