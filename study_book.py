@@ -1598,13 +1598,13 @@
 # Static methods - NO self
 
 #--------EXERCESISES-----------
-# class Adder:
-#     def add(self, x, y):
-#         print('Not Implemented')
+# class Adder:        # Inheritance
 #     def __init__(self, start=[]):
 #         self.data=start
 #     def __add__(self, other):
 #         return self.add(self.data, other)
+#     def add(self):
+#         print('Not Implemented')
 # class ListAdder(Adder):
 #     def add(self, x, y):
 #         return x+y
@@ -1615,13 +1615,13 @@
 #         for k in y.keys(): d[k] = y[k]
 #         return d
 # x=Adder()
-# x.add(1,2)
+# x.add()
 # y=ListAdder()
 # print(y.add([1], [2]))
 # z=DictAdder()
 # print(z.add({'a': 1, 'b': 2, 'c': 3}, {'d': 4, 'e': 5, 'a': 6}))
 # x=Adder([10])
-# x+[2]
+# #print(x+[2])   # error
 # y=ListAdder([10])
 # print(y+[2])
 # #v2
@@ -1640,12 +1640,14 @@
 #         d = self.data.copy()
 #         d.update(y)
 #         return d
+# x=Adder([1, 2, 3])
+# x + [1, 2]
 # y=ListAdder([1, 2, 3])
 # print(y + [1, 2])
 # z=DictAdder({'name':'Bob'}) + {'a': 1, 'b': 2, 'c': 3}
 # print(z)
 
-# class MyList:
+# class MyList:     # Operator overloading
 #     def __init__(self, start):
 #         #self.wrapped = start[:]
 #         self.wrapped = list(start)
@@ -1653,7 +1655,7 @@
 #         return MyList(self.wrapped + other)
 #     def __mul__(self, time):
 #         return MyList(self.wrapped * time)
-#     def __getitem__(self, offset): # index and slice in 3.X
+#     def __getitem__(self, offset):  # indexing and slicing in 3.X
 #         return self.wrapped[offset]
 #     def __len__(self):
 #         return len(self.wrapped)
@@ -1673,20 +1675,21 @@
 #     print(len(x))
 #     x.append('a')
 #     x.sort()
+#     print(x)
 #     print(' '.join(c for c in x))
 
-# class MyListSub(MyList):
+# class MyListSub(MyList):    # Subclassing
 #     calls = 0
 #     def __init__(self, start):
-#         self.adds = 0 # Varies in each instance
+#         self.adds = 0       # Varies in each instance
 #         MyList.__init__(self, start)
 #     def __add__(self, other):
 #         print('add: ' + str(other))
 #         MyListSub.calls += 1     # Class counter
-#         self.adds += 1      # Instance counts
+#         self.adds += 1           # Instance counts
 #         return MyList.__add__(self, other)  # perform inherited MyList method
 #     def stats(self):
-#         return self.calls, self.adds
+#         return self.calls, self.adds    # class count and instance add operation
 # if __name__ == '__main__':
 #     x = MyListSub('spam')
 #     y = MyListSub('foo')
@@ -1698,16 +1701,16 @@
 #     print(y + ['bar'])
 #     print(x.stats(), y.stats())
 
-# class Attrs:
+# class Attrs:      # Attribute methods
 #     def __getattr__(self, name):
-#         print('get %s' % name)
+#         print(f'get {name}')
 #     def __setattr__(self, name, value):
-#         print('set %s %s' % (name, value))
+#         print(f'set {name} - {value}')
 # x = Attrs()
-# x.append_attr
-# x.new_attribute='spam'
+# x.getting_attr
+# x.new_attribute = 'spam'
 
-# class MSet:
+# class MSet:     # Set objects with *args
 #     def __init__(self, value=[]):    # Constructor
 #         self.data = []
 #         self.concat(value)
@@ -1724,12 +1727,12 @@
 #         res = []
 #         for seq in args:
 #             for x in seq:
-#                 if not x in res:
+#                 if x not in res:
 #                     res.append(x)
 #         return MSet(res)
-#     def concat(self, value): # value: list, Set...
-#         for x in value: # Removes duplicates
-#             if not x in self.data:
+#     def concat(self, value):    # value: list, Set...
+#         for x in value:     # Removes duplicates
+#             if x not in self.data:
 #                 self.data.append(x)
 #     def __len__(self): return len(self.data) # len(self), if self
 #     def __getitem__(self, key): return self.data[key] # self[i], self[i:j]
@@ -1741,7 +1744,7 @@
 # y = MSet([3, 4, 5])
 # print(x & y)                # __and__, intersect, then __repr__
 # print(x | y)                # __or__, union, then __repr__
-# z = MSet("hello")            # __init__ removes duplicates
+# z = MSet("hello")           # __init__ removes duplicates
 # print(z, len(z))
 # print(z[0], z[-1], z[2:])   # __getitem__ is used
 # for c in z: print(c, end=' ')  # __iter__ (else __getitem__)
@@ -1754,7 +1757,7 @@
 # c = MSet([0, 1, 2])
 # print(a & b)
 # print(a | b)
-# print(a.intersect(b,c))
+# print(a.intersect(b,c))     # for several - use full method name intersection here
 # print(a.union(b,c))
 # print(a.intersect([1,2,3], [2,3,4], [1,2,3]))
 # print(a.union(range(10)))
@@ -1763,7 +1766,7 @@
 
 # class Up: pass
 # class Down: pass
-# class ListInstance(Up,Down):
+# class ListInstance(Up,Down):      # Class tree links
 #     def __attrnames(self):
 #         result = ''
 #         for attr in sorted(self.__dict__):
@@ -1787,8 +1790,8 @@
 # x.data3=42
 # print(x)
 
-# class Lunch:
-#     def __init__(self):
+# class Lunch:        # Composition
+#     def __init__(self):     # controller class
 #         self.cust = Customer()
 #         self.empl = Employee()
 #     def order(self, foodName):
@@ -1815,7 +1818,7 @@
 #     x.order('pizza')
 #     x.result()
 
-# class Animal:
+# class Animal:   # Inheritance
 #     def reply(self): self.speak()
 #     def speak(self): print('spam')
 # class Mammal(Animal):
@@ -1826,9 +1829,34 @@
 #     def speak(self): print('bark')
 # class Primate(Mammal):
 #     def speak(self): print('Hello world!')
-# class Hacker(Primate): pass
+# class Hacker(Primate): pass     # gets speak method of Primate
 # spot = Cat()
 # spot.reply()
 # data = Hacker()
 # data.reply()
 
+# class Actor:
+#     def line(self):
+#         print(self.name + ':', repr(self.says()))
+# class Customer(Actor):
+#     name = 'customer'
+#     def says(self): return "that's one ex-bird!"
+# class Clerk(Actor):
+#     name = 'clerk'
+#     def says(self): return "no it isn't..."
+# class Parrot(Actor):
+#     name = 'parrot'
+#     def says(self): return None
+# class Scene:     # class Scene - Compositon
+#     def __init__(self):
+#         self.customer = Customer()
+#         self.clerk = Clerk()
+#         self.subject = Parrot()
+#     def action(self):
+#         self.customer.line()
+#         self.clerk.line()
+#         self.subject.line()
+# x=Scene()
+# x.action()
+
+#-----EXCEPTIONS------
