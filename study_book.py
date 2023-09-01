@@ -1946,3 +1946,17 @@
 #     print('finally run')
 # print('after run')  # not printed
 
+# x=99
+# try:
+#     1/0
+# except Exception as x:
+#     print(x)    # print & removes x
+#     saveit = x  # save x
+# print('Saved =', saveit)    # envokes saved
+# print(x)    # NameError: name 'x' is not defined
+
+# try:
+#     raise IndexError('spam')    # Exceptions remember arguments
+# except IndexError:
+#     print('propagating')
+#     raise   # Reraise most recent exception
