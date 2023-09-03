@@ -1960,3 +1960,15 @@
 # except IndexError:
 #     print('propagating')
 #     raise   # Reraise most recent exception
+
+# try:
+#     1 / 0
+# except Exception as E:      # explicit exception
+#     raise TypeError('Bad') from E
+# except:                     # implicit exception
+#     badname
+
+# def f(x):
+#     assert x < 0, 'x must be negative'
+#     return x ** 2
+# print(f(2))
