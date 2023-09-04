@@ -1972,3 +1972,64 @@
 #     assert x < 0, 'x must be negative'
 #     return x ** 2
 # print(f(2))
+
+# class TraceBlock:
+#     def message(self, arg):
+#         print('running ' + arg)
+#     def __enter__(self):
+#         print('starting with block')
+#         return self
+#     def __exit__(self, exc_type, exc_value, exc_tb):
+#         if exc_type is None:
+#             print('exited normally\n')
+#         else:
+#             print('raise an exception! ' + str(exc_type))
+#             return False
+# if __name__ == '__main__':
+#     with TraceBlock() as action:
+#         action.message('test 1')
+#         print('reached')
+#     with TraceBlock() as action:
+#         action.message('test 2')
+#         raise TypeError
+#         print('not reached')
+
+# # difference in lines
+# with open('script1.py') as f1, open('script2.py') as f2:
+#     for (linenum, (line1, line2)) in enumerate(zip(f1, f2)):
+#         if line1 != line2:
+#             print('%s\n%r\n%r' % (linenum, line1, line2))
+
+# import sys
+# class General(Exception): pass
+# class Specific1(General): pass
+# class Specific2(General): pass
+# def raiser0(): raise General()
+# def raiser1(): raise Specific1()
+# def raiser2(): raise Specific2()
+# for func in (raiser0, raiser1, raiser2):
+#     try:
+#         func()
+#     except General as X:    # X is the raised instance
+#         print('caught: %s' % X.__class__)
+#         #print('the same ', sys.exc_info()[0])
+
+# class E(Exception):
+#     def __repr__(self):
+#         return 'Not called!'
+# raise E('spam')   # E: spam
+# class E(Exception):
+#     def __str__(self):
+#         return 'Called!'
+# raise E('spam')   # E: Called!
+
+# class FormatError(Exception):
+#     def __init__(self, line, file):
+#         self.line = line
+#         self.file = file
+# def parser():
+#     raise FormatError(42, file='spam.txt')
+# try:
+#     parser()
+# except FormatError as X:
+#     print(f'Error at: {X.file} {X.line}')
