@@ -2033,3 +2033,13 @@
 #     parser()
 # except FormatError as X:
 #     print(f'Error at: {X.file} {X.line}')
+
+# def action2():
+#     print(1 + [])
+# try:
+#     try:
+#         action2()
+#     except TypeError:
+#         print('inner try')  # prints inner and exits
+# except TypeError:
+#     print('outer try')
