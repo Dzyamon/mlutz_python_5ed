@@ -2043,3 +2043,122 @@
 #         print('inner try')  # prints inner and exits
 # except TypeError:
 #     print('outer try')
+# try:
+#     try:
+#         raise IndexError
+#     finally:
+#         print('spam')
+# finally:
+#     print('SPAM')
+
+# try/except statements: exits from the most recently try
+# try/ finally statements: returns to the first finally
+
+#------EXERCISES--------
+# def oops():
+#     raise IndexError()
+# def another():
+#     try:
+#         oops()
+#     except IndexError:
+#         print('caught oops')
+#     else:
+#         print('no errors')
+# another()
+
+# class MyError(Exception): pass
+# def oops():
+#     raise MyError('Text with error here...')
+# def another():
+#     try:
+#         oops()
+#     except IndexError:
+#         print('caught oops')
+#     except MyError as excpt:
+#         print('caught:', MyError, excpt)
+#     else:
+#         print('no errors')
+# another()
+
+# import sys, traceback
+# def safe(callee, *pargs, **kargs):
+#     try:
+#         callee(*pargs, **kargs)
+#     except:
+#         traceback.print_exc()
+#         print('Got %s %s' % (sys.exc_info()[0], sys.exc_info()[1]))
+# safe(oops)
+# #v2 with decorators
+# import sys, traceback
+# def safe(callee):
+#     def proxy(*pargs, **kargs):
+#         try:
+#             callee(*pargs, **kargs)
+#         except:
+#             traceback.print_exc()
+#             print('Got %s %s' % (sys.exc_info()[0], sys.exc_info()[1]))
+#             #raise
+#     return proxy
+# @safe
+# def test():
+#     oops()
+# test()
+
+# # Find the smallest & largest file in a single directory
+# import os, glob
+# dirname = r'D:\DO\books'
+# allsizes = []
+# all = glob.glob(dirname + os.sep + '*.pdf')
+# for filename in all:
+#     filesize = os.path.getsize(filename)
+#     allsizes.append((filesize, filename))
+# allsizes.sort()
+# print(allsizes[:1])
+# print(allsizes[-1:])
+
+# # Find the smallest & largest file in an entire directory tree
+# import os, sys, pprint
+# if sys.platform[:3] == 'win':
+#     dirname = r'D:\DO\books'
+# else:
+#     dirname = r'/home/dzyamon/books'
+# allsizes = []
+# for current_dir, dirs, files in os.walk(dirname):   # os.walk(".") --> current directory
+#     for filename in files:
+#         if filename.endswith('.pdf'):
+#             fullname = os.path.join(current_dir, filename)
+#             fullsize = os.path.getsize(fullname)
+#             allsizes.append((fullsize, fullname))
+# allsizes.sort()
+# pprint.pprint(allsizes[:1])
+# pprint.pprint(allsizes[-1:])
+
+# os.path.normpath(Dir)
+# 'C:\Users\admin\temp\..\Documents' --> 'C:\\Users\\admin\\Documents'
+
+# # Sum columns in a text file separated by commas
+# filename = 'data.txt'
+# sums = {}
+# for line in open(filename):
+#     cols = line.split(',')
+#     nums = [int(col) for col in cols]
+#     for (ix, num) in enumerate(nums):
+#         sums[ix] = sums.get(ix, 0) + num
+# for key in sorted(sums):
+#     print(key, '=', sums[key])
+
+# # Similar to prior, but using lists instead of dictionaries for sums
+# # to run in teminal: python study_book.py data.txt 10
+# import sys
+# filename = sys.argv[1]
+# numcols = int(sys.argv[2])
+# totals = [0] * numcols
+# for line in open(filename):
+#     cols = line.split(',')
+#     nums = [int(x) for x in cols]
+#     totals = [(x + y) for (x, y) in zip(totals, nums)]
+# print(totals)
+
+# import os
+# output = os.popen('dir')
+# print(output.read())
