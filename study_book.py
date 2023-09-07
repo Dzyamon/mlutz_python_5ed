@@ -2167,42 +2167,86 @@
 # for line in output:
 #     print(line, end='')
 
-from tkinter import *
-import random
-class MyGui:
-    """
-    A GUI with buttons that change color and make the label grow
-    """
-    colors = ['blue', 'green', 'orange', 'red', 'brown', 'yellow']
-    def __init__(self, parent, title='popup'):
-        parent.title(title)
-        self.growing = False
-        self.fontsize = 10
-        self.lab = Label(parent, text='Gui1', fg='white', bg='navy')
-        self.lab.pack(expand=YES, fill=BOTH)
-        Button(parent, text='Spam', command=self.reply).pack(side=LEFT)
-        Button(parent, text='Grow', command=self.grow).pack(side=LEFT)
-        Button(parent, text='Stop', command=self.stop).pack(side=LEFT)
-    def reply(self):
-        "change the button's color at random on Spam presses"
-        self.fontsize += 5
-        color = random.choice(self.colors)
-        self.lab.config(bg=color, font=('courier', self.fontsize, 'bold italic'))
-    def grow(self):
-        "start making the label grow on Grow presses"
-        self.growing = True
-        self.grower()
-    def grower(self):
-        if self.growing:
-            self.fontsize += 5
-            self.lab.config(font=('courier', self.fontsize, 'bold'))
-            self.lab.after(500, self.grower)
-    def stop(self):
-        "stop the button growing on Stop presses"
-        self.growing = False
-class MySubGui(MyGui):
-    colors = ['black', 'purple']
-MyGui(Tk(), 'main')
-MyGui(Toplevel())
-MySubGui(Toplevel())
-mainloop()
+# from tkinter import *
+# import random
+# class MyGui:
+#     """
+#     A GUI with buttons that change color and make the label grow
+#     """
+#     colors = ['blue', 'green', 'orange', 'red', 'brown', 'yellow']
+#     def __init__(self, parent, title='popup'):
+#         parent.title(title)
+#         self.growing = False
+#         self.fontsize = 10
+#         self.lab = Label(parent, text='Gui1', fg='white', bg='navy')
+#         self.lab.pack(expand=YES, fill=BOTH)
+#         Button(parent, text='Spam', command=self.reply).pack(side=LEFT)
+#         Button(parent, text='Grow', command=self.grow).pack(side=LEFT)
+#         Button(parent, text='Stop', command=self.stop).pack(side=LEFT)
+#     def reply(self):
+#         "change the button's color at random on Spam presses"
+#         self.fontsize += 5
+#         color = random.choice(self.colors)
+#         self.lab.config(bg=color, font=('courier', self.fontsize, 'bold italic'))
+#     def grow(self):
+#         "start making the label grow on Grow presses"
+#         self.growing = True
+#         self.grower()
+#     def grower(self):
+#         if self.growing:
+#             self.fontsize += 5
+#             self.lab.config(font=('courier', self.fontsize, 'bold'))
+#             self.lab.after(500, self.grower)
+#     def stop(self):
+#         "stop the button growing on Stop presses"
+#         self.growing = False
+# class MySubGui(MyGui):
+#     colors = ['black', 'purple']
+# MyGui(Tk(), 'main')
+# MySubGui(Toplevel())
+# mainloop()
+
+# Email inbox scanning and maintenance utility
+"""
+scan pop email box, fetching just headers, allowing
+deletions without downloading the complete message
+"""
+import poplib, getpass, logging, sys
+mailserver = 'pop.gmail.com'
+mailport = '995'
+mailuser = 'dziamon'
+mailpasswd = getpass.getpass(prompt='Password:')    # ! Edit configuration "Emulate terminal in output console"
+mailpasswd = 'mbop nste ufra knsu'  # for testing only
+print('Connecting...')
+# logging.basicConfig(level=logging.DEBUG, filename="mail_log.log", filemode="w",
+#                     format="%(asctime)s %(levelname)s %(message)s")
+# logging.debug('connecting to ' + mailserver)
+server = poplib.POP3_SSL(mailserver)
+# logging.debug('logging in')
+server.user(mailuser)
+server.pass_(mailpasswd)
+try:
+    print(server.getwelcome())
+    msgCount, mboxSize = server.stat()
+    print('There are', msgCount, 'mail messages, size ', mboxSize)
+    msginfo = server.list()
+    print(msginfo)
+    for i in range(msgCount):
+        msgnum = i+1
+        msgsize = msginfo[1][i].split()[1]
+        resp, hdrlines, octets = server.top(msgnum, 0)
+        print('-'*80)
+        print('[%d: octets=%d, size=%s]' % (msgnum, octets, msgsize))
+        for line in hdrlines:
+            print(line.decode('koi8-r'))
+        if input('Print?') in ['y', 'Y']:
+            for line in server.retr(msgnum)[1]:
+                print(line)
+        if input('Delete?') in ['y', 'Y']:
+            print('deleting')
+            server.dele(msgnum)
+        else:
+            print('skipping')
+finally:
+    server.quit()
+input('Bye.')

@@ -1,0 +1,11 @@
+test_div 2023-09-07 13:27:28,798 INFO Testing the custom logger for module test_div:
+test_div 2023-09-07 13:27:29,226 INFO x/y successful with result: 0.4
+test_div 2023-09-07 13:27:29,227 INFO x/y successful with result: 0.42857142857142855
+test_div 2023-09-07 13:27:29,227 INFO x/y successful with result: 0.5
+test_div 2023-09-07 13:27:29,227 ERROR ZeroDivisionError
+Traceback (most recent call last):
+  File "D:\DO\gitrep\mlutz_python_5ed\logging\test_div.py", line 19, in test_division
+    x/y
+    ~^~
+ZeroDivisionError: division by zero
+test_div 2023-09-07 13:27:29,264 INFO x/y successful with result: 10.0
