@@ -2211,42 +2211,90 @@
 scan pop email box, fetching just headers, allowing
 deletions without downloading the complete message
 """
-import poplib, getpass, logging, sys
-mailserver = 'pop.gmail.com'
-mailport = '995'
-mailuser = 'dziamon'
-mailpasswd = getpass.getpass(prompt='Password:')    # ! Edit configuration "Emulate terminal in output console"
-mailpasswd = 'mbop nste ufra knsu'  # for testing only
-print('Connecting...')
-# logging.basicConfig(level=logging.DEBUG, filename="mail_log.log", filemode="w",
-#                     format="%(asctime)s %(levelname)s %(message)s")
-# logging.debug('connecting to ' + mailserver)
-server = poplib.POP3_SSL(mailserver)
-# logging.debug('logging in')
-server.user(mailuser)
-server.pass_(mailpasswd)
-try:
-    print(server.getwelcome())
-    msgCount, mboxSize = server.stat()
-    print('There are', msgCount, 'mail messages, size ', mboxSize)
-    msginfo = server.list()
-    print(msginfo)
-    for i in range(msgCount):
-        msgnum = i+1
-        msgsize = msginfo[1][i].split()[1]
-        resp, hdrlines, octets = server.top(msgnum, 0)
-        print('-'*80)
-        print('[%d: octets=%d, size=%s]' % (msgnum, octets, msgsize))
-        for line in hdrlines:
-            print(line.decode('koi8-r'))
-        if input('Print?') in ['y', 'Y']:
-            for line in server.retr(msgnum)[1]:
-                print(line)
-        if input('Delete?') in ['y', 'Y']:
-            print('deleting')
-            server.dele(msgnum)
-        else:
-            print('skipping')
-finally:
-    server.quit()
-input('Bye.')
+# import poplib, getpass, logging, sys
+# from email.header import decode_header
+# from email import message_from_string
+# mailserver = 'pop.gmail.com'
+# mailport = '995'
+# mailuser = 'dziamon'
+# mailpasswd = getpass.getpass(prompt='Password:')    # ! Edit configuration "Emulate terminal in output console"
+# mailpasswd = 'mbop nste ufra knsu'  # for testing only
+# print('Connecting...')
+# # logging.basicConfig(level=logging.DEBUG, filename="mail_log.log", filemode="w",
+# #                     format="%(asctime)s %(levelname)s %(message)s")
+# # logging.debug('connecting to ' + mailserver)
+# server = poplib.POP3_SSL(mailserver, mailport)
+# # logging.debug('logging in')
+# server.user(mailuser)
+# server.pass_(mailpasswd)
+# try:
+#     print(server.getwelcome())
+#     msgCount, mboxSize = server.stat()
+#     print('There are', msgCount, 'mail messages, size ', mboxSize)
+#     msginfo = server.list()
+#     for i in range(msgCount):
+#         msgnum = i+1
+#         msgsize = msginfo[1][i].split()[1]
+#         print('-'*80)
+#         for line in server.top(msgnum, 0)[1]:
+#             print(line)
+#         if input('Print?') in ['y', 'Y']:
+#             for line in server.retr(msgnum)[1]:
+#                 print(line)
+#         if input('Delete?') in ['y', 'Y']:
+#             print('deleting')
+#             server.dele(msgnum)
+#         else:
+#             print('skipping')
+# finally:
+#     server.quit()
+# input('Bye.')
+# #v2
+# import poplib
+# from email.parser import Parser
+# from email.header import decode_header
+# from email.utils import parseaddr
+# from email import message_from_bytes
+# mailserver = 'pop.gmail.com'
+# mailport = 995
+# mailuser = 'dziamon'
+# mailpasswd = 'mbop nste ufra knsu'  # for testing only
+# mail_box = poplib.POP3_SSL(mailserver, mailport)
+# mail_box.user(mailuser)
+# mail_box.pass_(mailpasswd)
+# # stat() function return email count and occupied disk size
+# print('Messages: %s. Size: %s' % mail_box.stat())
+# num_messages = len(mail_box.list()[1])
+# mask = {'windows-1251': 'cp1251', 'koi8-r': 'koi8-r', None: 'utf-8', 'utf-8': 'utf-8'}
+# for i in range(num_messages):
+#     print(i+1, "message:")
+#     raw_email = b"\n".join(mail_box.retr(i+1)[1])
+#     parsed_email = message_from_bytes(raw_email)
+#     try:
+#         value_from, value_to, value_subject = parsed_email['From'], parsed_email['To'], parsed_email['Subject']
+#         value_from, charset_from = decode_header(value_from)[0]
+#         value_to, charset_to = decode_header(value_to)[0]
+#         value_subject, charset_subject = decode_header(value_subject)[0]
+#         email_from = value_from.decode(mask[charset_from])
+#         email_to = value_to.decode(mask[charset_to])
+#         email_subject = value_subject.decode(mask[charset_subject])
+#     except AttributeError:
+#         pass
+#     print('From ' + email_from)
+#     print('To ' + email_to)
+#     print('Subject ' + email_subject)
+#     print('Body', end='\n')
+#     body=bytes()
+#     if parsed_email.is_multipart():
+#         for part in parsed_email.walk():
+#             ctype = part.get_content_type()
+#             cdispo = str(part.get('Content-Disposition'))
+#             # skip any text/plain (txt) attachments
+#             if ctype == 'text/plain' and 'attachment' not in cdispo:
+#                 body = part.get_payload(decode=True)
+#                 break
+#     else:
+#         body = parsed_email.get_payload(decode=True)
+#     print(body.decode('koi8-r'))
+#     print()
+# mail_box.quit()
