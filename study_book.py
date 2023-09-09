@@ -203,9 +203,9 @@
 #         nonlocal state
 #         print(label, state)   
 #         state += 1     
-        # print(label, nested.state)     # state with function attribute
-        # nested.state += 1              # without nonlocal
-    # nested.state = start               # after nested def
+# print(label, nested.state)     # state with function attribute
+# nested.state += 1              # without nonlocal
+# nested.state = start               # after nested def
 #     return nested
 # F=tester(1)
 # G=tester(11)
@@ -2298,3 +2298,109 @@ deletions without downloading the complete message
 #     print(body.decode('koi8-r'))
 #     print()
 # mail_box.quit()
+
+# Create cgi-bin dir -> place *.py files -> make *.py executable
+# Run server in linux:
+# python3 -m http.server --cgi
+# Run server on windows:
+# from http.server import HTTPServer, CGIHTTPRequestHandler
+# server_address = ("", 8000)
+# httpd = HTTPServer(server_address, CGIHTTPRequestHandler)
+# httpd.serve_forever()
+# 1) http://localhost:8000/cgi-bin/cgi-script.py?your_name=Dzyamon&company_name=JJJ
+# 2) http://localhost:8000/cgi-bin/hello.py
+
+# The pickle module is used to convert  Python objects into a byte stream.
+# The shelve module implements a serialization dictionary where keys are strings and values are pickled Python objects.
+# import shelve
+# rec1 = {'name': {'first': 'Bob', 'last': 'Smith'},
+#         'job': ['dev', 'mgr'],
+#         'age': 40.5}
+# rec2 = {'name': {'first': 'Sue', 'last': 'Jones'},
+#         'job': ['mgr'],
+#         'age': 35.0}
+# # input data into shelve
+# db = shelve.open('dbfile')
+# db['bob'] = rec1
+# db['sue'] = rec2
+# db.close()
+# # reading shelve
+# db = shelve.open('dbfile')
+# for key in db:
+#     print(key, '=>', db[key])
+# # updating shelve
+# bob_new = db['bob']
+# bob_new['age'] += 1
+# db['bob'] = bob_new
+# print('new bob =>', db['bob'])
+# db.close()
+
+# Database script to populate and query a MySql database
+# # install mysqlclient ubuntu
+# # sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
+# # pip install mysqlclient
+# # pymysql __init__.py
+# # install Mysql:
+# # sudo apt install mysql-server
+# # sudo systemctl start mysql.service
+# # sudo mysql -u root -p
+# # ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Mysqlman1986!';
+# # sudo service mysql restart
+# import pymysql
+# conn = pymysql.connect(
+#     host='localhost',
+#     user='root',
+#     passwd='Mysqlman1986!',
+#     db='mysql'
+# )
+# curs = conn.cursor()
+# try:
+#     curs.execute('drop database testpeopledb')
+# except:
+#     pass
+# curs.execute('create database testpeopledb')
+# curs.execute('use testpeopledb')
+# curs.execute('create table people (name char(30), job char(10), pay int(4))')
+# curs.execute('insert people values (%s, %s, %s)', ('Bob', 'dev', 50000))
+# curs.execute('insert people values (%s, %s, %s)', ('Sue', 'dev', 60000))
+# curs.execute('insert people values (%s, %s, %s)', ('Ann', 'mgr', 40000))
+# curs.execute('select * from people')
+# for row in curs.fetchall():
+#     print(row)
+# curs.execute('select * from people where name = %s', ('Bob',))
+# print(curs.description)
+# colnames = [desc[0] for desc in curs.description]
+# while True:
+#     print('-' * 30)
+#     row = curs.fetchone()
+#     if not row: break
+#     for (name, value) in zip(colnames, row):
+#         print('%s => %s' % (name, value))
+# conn.commit()
+
+# # Fetch and open/play a file by FTP
+# import webbrowser
+# from ftplib import FTP
+# from getpass import getpass
+# nonpassive = False
+# # https://dlptest.com/ftp-test/
+# filename = input('File? ')   # test.txt
+# dirname = input('Dir? ') or '.'
+# sitename = 'ftp.dlptest.com'
+# user = 'dlpuser'
+# pswd = 'rNrKYTX9g7z3RgJRmxWuGHbeu'
+# print('Connecting...')
+# connection = FTP(sitename)
+# connection.login(user, pswd)
+# # userinfo = (user, getpass('Pswd?'))
+# # connection.login(*userinfo)
+# connection.cwd(dirname)
+# if nonpassive:
+#     connection.set_pasv(False)
+# print('Downloading...')
+# localfile = open(filename, 'wb')
+# connection.retrbinary('RETR ' + filename, localfile.write)
+# connection.quit()
+# localfile.close()
+# print('Opening in browser...')
+# webbrowser.open(filename)
